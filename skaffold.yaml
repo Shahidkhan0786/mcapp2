@@ -1,12 +1,12 @@
 apiVersion: skaffold/v2alpha3
-kind: Config 
+kind: Config
 deploy:
   kubectl:
     manifests:
       - ./infra/k8s/*
 build:
   local:
-    push: false 
+    push: false
   artifacts:
     - image: shahid78600/auth
       context: auth
@@ -14,5 +14,5 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - dest: .
-            src: 'src/**/*.js'
+          - src: "src/**/*.ts"
+            dest: .
