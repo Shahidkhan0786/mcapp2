@@ -4,7 +4,7 @@ import morgan from "morgan";
 const app = express();
 
 const PORT = 3000;
-import { currentUserRouter } from "./routes/current-user";
+import { currentUserRouter } from "./routes/currentUser";
 import { signupRouter } from "./routes/signup";
 import { SigninRouter } from "./routes/signin";
 import { SignoutRouter } from "./routes/signout";
@@ -13,8 +13,8 @@ import { NotFoundError } from "./errors/not-found-error";
 import mongoose from "mongoose";
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(signupRouter);
 app.use(currentUserRouter);
+app.use(signupRouter);
 app.use(SigninRouter);
 app.use(SignoutRouter);
 app.all("*", async (req, res, next) => {
