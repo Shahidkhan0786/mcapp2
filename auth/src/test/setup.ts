@@ -5,6 +5,17 @@ import request from "supertest";
 import { currentUser } from "../middlewares/current-user";
 let mongo: any = "";
 
+declare global {
+  namespace NodeJS {
+    interface Global {
+      signup(): Promise<string[]>;
+    }
+  }
+}
+
+
+
+
 beforeAll(async () => {
   process.env.JWT_KEY = "asdf";
   mongo = await MongoMemoryServer.create();
@@ -25,18 +36,18 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-global.signup = async () => {
-  const email = "test@test.com";
-  const password = "1231323312";
+// global.signup = async () => {
+//   const email = "test@test.com";
+//   const password = "1231323312";
 
-  const responsee = await request(app)
-    .post("/api/users/signup")
-    .send({
-      email,
-      password,
-    })
-    .expect(201);
+//   const responsee = await request(app)
+//     .post("/api/users/signup")
+//     .send({
+//       email,
+//       password,
+//     })
+//     .expect(201);
 
-  const cookie = responsee.get("Set-Cookie");
-  return cookie;
-};
+//   const cookie = responsee.get("Set-Cookie");
+//   return cookie;
+// };

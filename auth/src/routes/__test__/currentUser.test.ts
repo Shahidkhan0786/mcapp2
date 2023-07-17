@@ -19,3 +19,12 @@ it("should respond with details the current user", async () => {
   expect(responsee.body.currentUser.email).toEqual("shahidkhan@gmail.com");
   console.log("cuser", responsee.body);
 });
+
+it("should respond with null if user not  login", async ()=>{
+  const responsee = request(app)
+  .get('/api/users/cuser')
+  .send()
+  .expect(200)
+
+  expect((await responsee).body.currentUser).toEqual(null)
+})
