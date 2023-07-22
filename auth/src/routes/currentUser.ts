@@ -11,9 +11,10 @@ import { requireAuth } from "../middlewares/require-auth";
 router.get(
   "/api/users/cuser",
   currentUser,
-  requireAuth,
+  // requireAuth,
   async (req: Request, res: Response) => {
-    res.send({ currentUser: req.currentUser || null });
+    // res.send({ currentUser: req.currentUser || null });
+    res.send("okk");
   }
 );
 

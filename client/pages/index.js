@@ -15,7 +15,7 @@ LandingPage.getInitialProps = async () => {
   if (typeof window === "undefined") {
     console.log("on Serverrrrr");
     const { data } = await axios.get(
-      "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/currentuser",
+      "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/cuser",
       {
         headers: {
           Host: "ticket.com",
