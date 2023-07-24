@@ -2,7 +2,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { app } from "../app";
 import request from "supertest";
-import { currentUser } from "../middlewares/current-user";
+import { currentUser } from "@shahidorg/common";
 let mongo: any = "";
 
 declare global {

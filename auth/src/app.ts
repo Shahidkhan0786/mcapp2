@@ -8,8 +8,8 @@ import { currentUserRouter } from "./routes/currentUser";
 import { signupRouter } from "./routes/signup";
 import { SigninRouter } from "./routes/signin";
 import { SignoutRouter } from "./routes/signout";
-import { errorHandler } from "./middlewares/error-handler";
-import { NotFoundError } from "./errors/not-found-error";
+import { errorHandler } from "@shahidorg/common";
+import { NotFoundError } from "@shahidorg/common";
 
 app.use(express.json());
 app.set("trust proxy", true);

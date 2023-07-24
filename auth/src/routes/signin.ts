@@ -1,9 +1,9 @@
 import { body, validationResult } from "express-validator";
 import express, { Request, Response } from "express";
-import { RequestValidationError } from "../errors/request-validation-error";
+import { RequestValidationError } from "@shahidorg/common";
 import { User } from "../models/user";
-import { BadRequestError } from "../errors/bad-request-error";
-import { validateRequest } from "../middlewares/validate-request";
+import { BadRequestError } from "@shahidorg/common";
+import { validateRequest } from "@shahidorg/common";
 import { Password } from "../helper/password";
 import jwt from "jsonwebtoken";
 

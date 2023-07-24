@@ -1,35 +1,41 @@
-import axios from "axios";
+import buildClient from '../api/build-client';
+import Router from 'next/router';
 const LandingPage = ({ currentUser }) => {
-  console.log(" I am in a component ");
-  return (
-    <>
-      <h1>Landing page</h1>;
-      {/* {currentUser ? "welcome" : "you are not authorized!"} */}
-    </>
+  console.log(currentUser)
+  return currentUser ? (
+    <h1>You are signed in</h1>
+  ) : (
+    <h1>You are NOT signed in</h1>
   );
 };
 
-LandingPage.getInitialProps = async () => {
-  //   console.log("i am on a server!");
-  // let $url = "";
-  if (typeof window === "undefined") {
-    console.log("on Serverrrrr");
-    const { data } = await axios.get(
-      "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/cuser",
-      {
-        headers: {
-          Host: "ticket.com",
-        },
-      }
-    );
-    return data;
-  } else {
-    console.log("on Brow");
+LandingPage.getInitialProps = async context => {
+  console.log('LANDING PAGE!');
+  // console.log(context)
+  // Check if the cookie is available in the request headers
+  // const cookie = context.req ? context.req.headers.cookie : null;
+  // if(!cookie){
+  //   return {currentUser:null}
+  // }
+  const client = buildClient(context);
+  try{
+    const { data } = await client.get('/api/users/cuser');
 
-    let $url = "/api/users/cuser";
-    const { data } = await axios.get($url);
-    console.log("on browser", data);
     return data;
   }
+  catch(error){
+    if (error.response && error.response.status === 401) {
+      // Perform actions for unauthorized access, e.g., redirect to login page
+      console.log('Unauthorized access. Redirecting to login page...');
+      // Example: context.res.writeHead(302, { Location: '/login' });
+      //          context.res.end();
+      // You may also use a router to redirect if you are using a client-side framework like Next.js.
+    } else {
+      // Handle other errors here
+      console.error('An error occurred:', error.message);
+    }
+    return {currentUser:null}
+  }
 };
+
 export default LandingPage;
