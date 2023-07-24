@@ -6,13 +6,13 @@ const start = async () => {
     throw new Error("Jwt_Key Must Be define");
   }
   if (!process.env.MONGO_URI) {
-    throw new Error("mango uri Must Be define");
+    throw new Error("mongo uri Must Be define");
   }
   try {
     await mongoose
       .connect(process.env.MONGO_URI)
       .then(() => {
-        console.log("auth Connected DB Successfully");
+        console.log("ticket Connected DB Successfully");
       })
       .catch((err) => {
         console.log(err);
@@ -26,5 +26,5 @@ const start = async () => {
 
 start();
 app.listen(PORT, () => {
-  console.log(`auth service up and running on port ${PORT}`);
+  console.log(`ticket service up and running on port ${PORT}`);
 });
