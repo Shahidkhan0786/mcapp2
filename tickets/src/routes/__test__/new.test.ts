@@ -1,30 +1,85 @@
 import request from "supertest";
 import { app } from "../../app";
+import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import { getCookie } from "../../helper/cookie-helper";
+import { Ticket } from "../../models/ticket";
+it("has a route handler listning to api/tickets for post request ", async () => {
+  const response = await request(app).post("/api/tickets").send({});
 
-// it("should respond with details the current user", async () => {
-//     const authResponse = await request(app)
-//       .post("/api/users/signup")
-//       .send({
-//         email: "shahidkhan@gmail.com",
-//         password: "131ee242321w",
-//       })
-//       .expect(201);
-//     const cookie = authResponse.get("Set-Cookie");
-//     const responsee = await request(app)
-//       .get("/api/users/cuser")
-//       .set("Cookie", cookie)
-//       .send({})
-//       .expect(200);
+  expect(response.status).not.toEqual(404);
+});
 
-//     expect(responsee.body.currentUser.email).toEqual("shahidkhan@gmail.com");
-//     console.log("cuser", responsee.body);
-//   });
+it("can only be accessed if the user is signed in", async () => {
+  await request(app).post("/api/tickets").send({}).expect(401);
+});
 
-//   it("should respond with null if user not  login", async ()=>{
-//     const responsee = request(app)
-//     .get('/api/users/cuser')
-//     .send()
-//     .expect(200)
+it("returns a status other than 401 if the user is signed in", async () => {
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", getCookie())
+    .send({});
 
-//     expect((await responsee).body.currentUser).toEqual(null)
-//   })
+  console.log(response.status);
+  expect(response.status).not.toEqual(401);
+});
+
+it("returns an error if an invalid title is provided", async () => {
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", getCookie())
+    .send({
+      title: "",
+      price: 10,
+    })
+    .expect(400);
+
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", getCookie())
+    .send({
+      price: 10,
+    })
+    .expect(400);
+});
+
+it("returns an error if an invalid price is provided", async () => {
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", getCookie())
+    .send({
+      title: "asldkjf",
+      price: -10,
+    })
+    .expect(400);
+
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", getCookie())
+    .send({
+      title: "laskdfj",
+    })
+    .expect(400);
+});
+
+it("creates a ticket with valid inputs", async () => {
+  let tickets = await Ticket.find({});
+  expect(tickets.length).toEqual(0);
+
+  const title = "asldkfj";
+
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", getCookie())
+    .send({
+      title,
+      price: 20,
+    })
+    .expect(201);
+
+  tickets = await Ticket.find({});
+
+  expect(tickets.length).toEqual(1);
+  expect(tickets[0].price).toEqual(20);
+  expect(tickets[0].title).toEqual(title);
+});

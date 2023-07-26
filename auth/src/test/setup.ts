@@ -8,19 +8,16 @@ let mongo: any = "";
 declare global {
   namespace NodeJS {
     interface Global {
-      signup(): Promise<string[]>;
+      signin(): Promise<string[]>;
     }
   }
 }
-
-
-
 
 beforeAll(async () => {
   process.env.JWT_KEY = "asdf";
   mongo = await MongoMemoryServer.create();
   const mongoUri = await mongo.getUri();
-
+  console.log("fff", mongoUri);
   await mongoose.connect(mongoUri);
 });
 
@@ -36,7 +33,7 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-// global.signup = async () => {
+// global.signin = async () => {
 //   const email = "test@test.com";
 //   const password = "1231323312";
 

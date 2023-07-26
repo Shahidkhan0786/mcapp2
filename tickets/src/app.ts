@@ -4,10 +4,10 @@ import morgan from "morgan";
 const app = express();
 import cookieSession from "cookie-session";
 
-// import { currentUserRouter } from "./routes/currentUser";
-// import { signupRouter } from "./routes/signup";
-// import { SigninRouter } from "./routes/signin";
-// import { SignoutRouter } from "./routes/signout";
+import { createTicketRouter } from "./routes/new";
+import { indexTicketRouter } from "./routes/index";
+import { showTicketRouter } from "./routes/show";
+import { updateTicketRouter } from "./routes/update";
 import { errorHandler } from "@shahidorg/common";
 import { NotFoundError } from "@shahidorg/common";
 
@@ -26,10 +26,10 @@ app.use(
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   })
 );
-// app.use(currentUserRouter);
-// app.use(signupRouter);
-// app.use(SigninRouter);
-// app.use(SignoutRouter);
+app.use(createTicketRouter);
+app.use(indexTicketRouter);
+app.use(showTicketRouter);
+app.use(updateTicketRouter);
 app.get("/test", (req, res, next) => {
   return res.json("App is running");
 });

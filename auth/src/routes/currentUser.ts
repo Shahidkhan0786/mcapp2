@@ -11,7 +11,6 @@ import { requireAuth } from "@shahidorg/common";
 router.get(
   "/api/users/cuser",
   currentUser,
-  requireAuth,
   async (req: Request, res: Response) => {
     res.send({ currentUser: req.currentUser || null });
   }

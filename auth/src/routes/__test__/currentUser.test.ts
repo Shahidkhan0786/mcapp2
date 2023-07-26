@@ -10,6 +10,7 @@ it("should respond with details the current user", async () => {
     })
     .expect(201);
   const cookie = authResponse.get("Set-Cookie");
+  // const cookie = await global.signin();
   const responsee = await request(app)
     .get("/api/users/cuser")
     .set("Cookie", cookie)
@@ -17,14 +18,11 @@ it("should respond with details the current user", async () => {
     .expect(200);
 
   expect(responsee.body.currentUser.email).toEqual("shahidkhan@gmail.com");
-  console.log("cuser", responsee.body);
+  // console.log("cuser", responsee.body);
 });
 
-it("should respond with null if user not  login", async ()=>{
-  const responsee = request(app)
-  .get('/api/users/cuser')
-  .send()
-  .expect(200)
+it("should respond with null if user not  login", async () => {
+  const responsee = request(app).get("/api/users/cuser").send().expect(200);
 
-  expect((await responsee).body.currentUser).toEqual(null)
-})
+  expect((await responsee).body.currentUser).toEqual(null);
+});
